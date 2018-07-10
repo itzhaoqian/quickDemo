@@ -1,0 +1,25 @@
+<template>
+    <div class="form-wrap">
+      <input type="{{type}}" placeholder="{{placeholder}}" class="input-list" value="{{inputValue}}" onchange="onInput"/>  
+    </div>
+</template>
+
+<style>
+.form-wrap{width:100%;}
+.input-list{border-bottom-width: 1px; border-bottom-color: #E6E6E6;height:80px;width:100%;font-size:22px;}
+</style>
+
+<script>
+  export default {
+    props:['type','placeholder','value'],
+    data(){
+      return {
+        inputValue:''
+      }
+    },
+    onInput({value}){
+      this.inputValue = value
+      this.$dispatch('input', { value: value })
+    }
+  }
+</script>

@@ -1,0 +1,144 @@
+<import name="c-input" src="../Common/component/CInput/index"></import>
+<template>
+  <div class="loginWrap">
+    <div class="logoWrap"><div class="logo"></div></div>
+    <!--<div class="form-wrap">
+      <input type="text" placeholder="用户名/电子邮箱/手机号" class="input-list"/>     
+    </div>-->
+    <c-input type="text" placeholder="用户名/电子邮箱/手机号" onInput="changeUserName"></c-input>
+    <c-input type="password" placeholder="请输入密码" onInput="changePassword"></c-input>
+    <!--<div class="form-wrap">
+      <input type="password" placeholder="请输入密码" class="input-list"/>     
+    </div>-->
+    <div class="loginBtnWrap"><text class="main-btn1 space1" @click="checkLogin">登录</text></div>
+    <div class="qloginBtnWrap"><text class="main-btn2" @click="getCookie">一键登录</text></div>
+    <text>{{auth}}</text>
+    <div class=""><text></text></div>
+  </div>
+  
+</template>
+
+<style>
+ .loginWrap{display:flex;flex-direction:column;align-items:center;padding:20px 80px;}
+ .logo{background-image:url(../Common/img/58logo.png);width:150px;height:137px;}
+ .logoWrap{margin:100px 0 100px 0;}
+ 
+ .main-btn1{background-color:#ff552e;height:80px;color:#fff;width:100%;text-align:center;}
+ .main-btn2{height:80px;color:#ff552e;width:100%;text-align:center;border:1px solid #ff552e;}
+ .space1{margin:40px 0 30px 0;}
+</style>
+
+<script>
+  export default{
+    data:{
+      username:'',
+      password:'',
+      auth:''
+    },
+    changeUserName({ detail: { value } }){
+      this.username = value;
+    },
+    changePassword({ detail: { value } }){
+      this.password = value;
+    },
+    checkLogin(){
+      //let _this = this;
+      if(this.username == '')
+      {
+          this.$app.$def.prompt.showToast({
+            message: '您还没有输入用户名'
+          })
+      }
+      else if( this.password == '' )
+      {
+          this.$app.$def.prompt.showToast({
+            message: '您还没有输入密码'
+          })
+      }
+      else
+      {
+          // storage.set({
+          //   key: 'auth',
+          //   value: response.headers['Set-Cookie'],
+          //   success:function(data){
+          //     console.log('cookies保存成功')
+          //   }
+          // })
+          this.$app.$def.storage.set({
+            key: 'user',
+            value: this.username
+          })
+          this.$app.$def.storage.set({
+            key: 'password',
+            value: this.password
+          })
+          this.$app.$def.storage.set({
+            key: 'auth',
+            value: true
+          })
+          this.$app.$def.router.push ({
+            uri: '/Order'
+          })
+      }
+
+      // this.$app.$def.prompt.showDialog({
+      //     title: 'title',
+      //     message: 'message',
+      //     buttons: [
+      //       {
+      //         text: 'btn',
+      //         color: '#33dd44'
+      //       },
+      //       {
+      //         text: 'btn1',
+      //         color: '#33dd44'
+      //       },
+      //       {
+      //         text: 'btn2',
+      //         color: '#33dd44'
+      //       }
+      //     ],
+      //     success: function (data) {
+      //       if( data.index == 0 )
+      //       {
+      //         _this.$app.$def.prompt.showToast({
+      //           message: '第一个'
+      //         })
+      //       }
+      //       else if( data.index == 1)
+      //       {
+      //         _this.$app.$def.prompt.showToast({
+      //           message: '第二个'
+      //         })
+      //       }
+      //     },
+      //     cancel: function () {
+      //       _this.$app.$def.prompt.showToast({
+      //         message: 'cancel'
+      //       })
+      //     },
+      //     fail: function (data, code) {
+      //       _this.$app.$def.prompt.showToast({
+      //         message: 'fail'
+      //       })
+      //     }
+      //   })
+    },
+    getCookie(){
+      const _this = this;
+      this.$app.$def.storage.get({
+        key: 'auth',
+        success: function(data){
+          // resolve(true)
+          this.auth = data;
+          _this.$app.$def.prompt.showToast({
+              message: this.auth
+          })
+        },
+        fail: function(data, code){
+          // resolve(false)
+        }
+      })
+    }
+  }
+</script>

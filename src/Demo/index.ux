@@ -1,0 +1,178 @@
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="demo-page">
+      <swiper class="banner" autoplay="true" interval="4000">  
+        <stack class="banner" for="{{bannerList}}">       
+          <image class="headerPic" src="{{$item.src}}" @click="goLink($idx)"></image>   
+        </stack>
+      </swiper> 
+      <refresh class="refresh" onrefresh="refresh" refreshing="{{isRefreshing}}">
+        <list class="listWrap" onscrollbottom="loadMoreData">
+          <block for="{{carList}}">
+            <list-item type="list"  @click="goShare">
+              <div class="liWrap">
+                <image src="{{$item.src}}" class="liImg">
+                <div class="descWrap">
+                  <text class="title">{{$item.name}}</text>
+                  <text class="date">{{$item.date}}</text>
+                  <text class="price">{{$item.price}}万</text>
+                </div>
+              </div>
+            </list-item>
+          </block>
+          <list-item type="loadStatus" class="load-status">
+            <progress type="circular" show="{{hasMoreData}}"></progress>
+            <text show="{{hasMoreData}}" id="liWrap">加载更多</text>
+            <!--<text show="{{!hasMoreData}}">没有更多了~</text>-->
+          </list-item>
+        </list>
+      </refresh>
+  </div>
+</template>
+
+<style>
+  .demo-page {
+    flex-direction: column; /* 项目排列方向 主轴为垂直方向，起点在上沿。 */
+    align-items: center; /* 上下居中对齐 */
+  }
+  .banner,.headerPic{
+    width: 100%;
+    height:300px;
+    indicator-color:#fff;
+  }
+  .listWrap{
+    padding:20px;
+    flex-direction: column;
+  }
+  .liWrap{
+    width:700px;
+    height:200px;  
+  }
+  .liImg{
+    width:200px;
+  }
+  .descWrap{
+    flex-direction:column;
+    flex-wrap:wrap;
+    width:500px;
+    margin-left:20px;
+  }
+  .descWrap .title{
+    
+  }
+  .descWrap .date{
+    font-size:22px;
+  }
+  .descWrap .price{
+    color:red;
+  }
+  .load-status{
+    justify-content:center
+  }
+  
+</style>
+
+<script>
+
+  export default {
+    // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+    private: {
+      bannerList:[
+        {src:'../Common/img/header1.jpg',href:'/DemoDetail'},
+        {src:'../Common/img/header2.jpg',href:'/DemoDetail'},
+        {src:'../Common/img/header3.jpg',href:'/DemoDetail'},
+        {src:'../Common/img/header6.jpg',href:'/DemoDetail'}
+      ],
+      carList:[
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'},
+        {src:'http://pic1.58cdn.com.cn/p1/big/n_v2aa745db8d557496b860eea1b08ac0e30.jpg?w=364&h=270&crop=1',name:'日产 轩逸 2016款 1.6XL CVT豪华版-精品之家 只做精品',price:'12',date:'2015-09-10'}
+      ],
+      isRefreshing: false
+    },
+    protected:{
+    },
+    onInit(){
+      console.info('onInit~~~~~')
+    },
+    onReady(){
+      // this.title = this.$app.$def.pickerTxt;
+      // var _this = this;
+      // this.$app.$def.fetch.fetch({
+      //   url: 'https://www.jinhui365.com/isHaveHotHonor',
+      //   method:"POST",
+      //   header:{'Content-Type': 'application/json'},
+      //   success: function (data) {
+      //     data = JSON.parse(data.data);
+      //     _this.$app.$def.prompt.showToast({
+      //       message: data
+      //     })
+      //   },
+      //   fail: function (data, code) {
+      //   }
+      // })
+      console.log(this.$element('liWrap'))
+    },
+    refresh (e) {
+      const _this = this
+      // 更新刷新状态（属性refreshing的值从false改为true会触发refresh组件的状态更新，反之亦然）
+      _this.isRefreshing = e.refreshing
+      setTimeout(function(){
+        // 关闭刷新状态
+        _this.isRefreshing = false
+        _this.$app.$def.prompt.showToast({
+          message: '刷新完成'
+        })
+      },3000)
+    },
+    getCookie(){
+      const _this = this;
+      this.$app.$def.storage.get({
+        key: 'auth',
+        success: function(data){
+          // resolve(true)
+          _this.auth = data;
+          _this.$app.$def.prompt.showToast({
+              message: this.auth
+          })
+        },
+        fail: function(data, code){
+          // resolve(false)
+        }
+      })
+    },
+    goLink($idx){
+      this.$app.$def.router.push({
+        uri:this.bannerList[$idx].href
+      })
+    },
+    goShare(){
+      const _this = this;
+      this.$app.$def.shares.share({
+        shareType: 0,
+        title: '标题',
+        summary: '摘要',
+        imagePath: 'xxx/xxx/xxx/share.jpg',
+        targetUrl: 'http://www.example.com',
+        platforms: ["WEIBO"],
+        success: function (data) {
+          console.log('handling success')
+              _this.$app.$def.prompt.showToast({
+            message: 'success'
+          })
+        },
+        fail: function (data, code) {
+          console.log(`handling fail, code = ${code}`)
+              _this.$app.$def.prompt.showToast({
+            message: 'fail'
+          })
+        }
+      })
+    }
+  }
+</script>

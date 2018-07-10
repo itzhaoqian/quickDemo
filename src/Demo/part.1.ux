@@ -1,0 +1,24 @@
+<template>
+  <div>
+      <text>{{header}}</text>
+      <slot></slot>
+      <text>part1</text>
+      <text onclick="reName">按钮</text>
+  </div>
+</template>
+
+<style>
+  
+</style>
+
+<script>
+  export default {
+    props:[
+      'header',
+      'footer'
+    ],
+    reName(){
+      this.header='sghshsh'
+    }
+  }
+</script>

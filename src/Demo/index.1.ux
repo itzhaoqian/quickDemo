@@ -1,0 +1,117 @@
+<import src="./part"></import>
+<import name="part1" src="./part.1"></import>
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="demo-page">
+    <swiper class="banner" autoplay="true" interval="4000">
+        <image class="headerPic" src="../Common/img/header1.jpg" @click="goLink"></image>
+        <image class="headerPic" src="../Common/img/header2.jpg"></image>
+        <image class="headerPic" src="../Common/img/header3.jpg"></image>
+        <image class="headerPic" src="../Common/img/header6.jpg"></image>
+    </swiper>
+
+    <part header="{{headerDesc}}" footer="{{footerDesc}}">
+      <text>slot插槽内容</text>      
+    </part>
+    <part1 header="{{headerDesc}}"></part1>
+    <block for="{{listName}}">
+        <text>{{$idx}}:{{$item}}</text>
+    </block>
+    <text if="{{isShow===1}}">显示1</text>
+    <text else="{{isShow===0}}">显示0</text>
+    <text class="title {{className}}" onclick="changeClassName">欢迎打开{{title}}</text>
+
+    <input type="text" value="222" id="abs"/>
+    <input class="btn" type="button" value="跳转到详情页" onclick="routeDetail" />
+    <text onclick="letSee">{{headerDesc}}</text>
+     <!-- tabs组件 -->
+    <!--<tabs>
+      <tab-bar class="tab-bar">
+        <text>menu1</text>
+        <text>menu2</text>
+        <text>menu3</text>
+      </tab-bar>
+      <tab-content class="tab-content">
+        <div class="tab-content-section">
+          <text>content1</text>
+        </div>
+        <div class="tab-content-section">
+          <text>content2</text>
+        </div>
+        <div class="tab-content-section">
+          <text>content3</text>
+        </div>
+      </tab-content>
+    </tabs>-->
+  </div>
+</template>
+
+<style>
+  .demo-page {
+    flex-direction: column; /* 项目排列方向 主轴为垂直方向，起点在上沿。 */
+    align-items: center; /* 上下居中对齐 */
+  }
+  .banner,.headerPic{
+    width: 100%;
+    height:256px;
+    indicator-color:#fff;
+  }
+  .title {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .btn {
+    width: 550px;
+    height: 86px;
+    margin-top: 75px;
+    border-radius: 43px;
+    background-color: #09ba07;
+    font-size: 30px;
+    color: #ffffff;
+  }
+  .text-red{color:red;}
+</style>
+
+<script>
+
+  export default {
+    // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+    private: {
+      title: '示例页面',
+      className:'',
+      listName:['首页','列表','详情','关于我们'],
+      isShow:1,
+      headerDesc:'我是头部',
+      footerDesc:'我是底部'
+    },
+    protected:{
+      key:'1111'
+    },
+    onInit(){
+      console.info('onInit~~~~~')
+    },
+    onReady(){
+      console.info(`触发：onReady`)
+      // this.title = this.$app.$def.pickerTxt;
+    },
+    // changeClassName(){
+    //   this.className = 'text-red'
+    // },
+    routeDetail () {
+      // 跳转到应用内的某个页面，router用法详见：文档->接口->页面路由
+      this.$app.$def.router.push ({
+        uri: '/DemoDetail'
+      })
+    },
+    // letSee (){
+    //   this.headerDesc = this.headerDesc;
+    // },
+    // scrollView(){
+    //   const _this = this;
+    //   setTimeout(function(){  
+    //         _this.$element('abs').scrollintoview();// 参数可以是true， false, 空参数  
+    //     }, 300); 
+    // }
+  }
+</script>

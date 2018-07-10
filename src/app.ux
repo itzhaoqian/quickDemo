@@ -1,0 +1,23 @@
+<script>
+  /**
+   * 应用级别的配置，供所有页面公用
+   */
+  import util from './util'
+  import router from '@system.router'
+  import fetch from '@system.fetch'
+  import prompt from '@system.prompt'
+  import storage from '@system.storage'
+  import share from '@system.share'
+  import shares from '@service.share'
+  
+  export default {
+    showMenu: util.showMenu,
+    createShortcut: util.createShortcut,
+    fetch:fetch,
+    router:router,
+    prompt:prompt,
+    storage:storage,
+    share:share,
+    shares:shares
+  }
+</script>
