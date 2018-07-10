@@ -42,14 +42,15 @@
 
 - 容器组件
     - div、
-    - list（列表视图容器）、
+    - block（是表达逻辑区块的组件，没有对应的Native组件。可以使用<block>实现更为灵活的"列表/条件渲染"。如在<block>上使用for指令和if指令）
+    - list（为了得到流畅的列表滚动体验，推荐开发者使用list组件替代div组件实现长列表布局，因为Native会复用相同type属性的list-item）、
     - list-item（<list>的子组件，用来展示列表具体item，宽度默认充满list组件）、
     - popup（在点击控件或者某个区域后，浮出一个气泡来引导用户）、
     - refresh（下拉刷新容器）、
     - richtext（富文本容器）、
     - stack（基本容器，层叠覆盖前面的组件）、
     - swiper（滑块视图容器）、
-    - tabs（tab容器）、
+    - tabs（tabs中封装了常见功能和效果：页签支持横向滚动，支持手势滑动切换内容页等）、
     - tab-bar（<tabs>的子组件，用来展示tab的标签区，子组件排列方式为横向排列）、
     - tab-content（<tabs>的子组件，用来展示tab的内容区，高度默认充满tabs剩余空间，子组件排列方式为横向排列）
 - 基础组件
@@ -113,76 +114,6 @@
     </div>
   </list-item>
 </block>
-```
-
-## 组件：
-+ list组件：  
-
-    为了得到流畅的列表滚动体验，推荐开发者使用list组件替代div组件实现长列表布局，因为Native会复用相同type属性的list-item
-+  block组件：
-
-    是表达逻辑区块的组件，没有对应的Native组件。可以使用<block>实现更为灵活的"列表/条件渲染"。如在<block>上使用for指令和if指令
-+  tabs组件：
-
-    tabs中封装了常见功能和效果：页签支持横向滚动，支持手势滑动切换内容页等
-+  swiper组件：
-
-    滑块视图容器
-+  自带弹框组件
-
-    <img src="https://note.youdao.com/yws/api/personal/file/996F1E9485B64F2AB511C882EAA58818?method=download&shareKey=50c01dc2b51178ecbf3716de23c17496" width=200  />  
-
-```   
-   const prompt = require('@system.prompt')
-   prompt.showToast(OBJECT)
-   prompt.showDialog(OBJECT)
-   prompt.showContextMenu(OBJECT)
-   //示例
-    checkLogin(){
-      let _this = this;
-      this.$app.$def.prompt.showDialog({
-          title: 'title',
-          message: 'message',
-          buttons: [
-            {
-              text: 'btn',
-              color: '#33dd44'
-            },
-            {
-              text: 'btn1',
-              color: '#33dd44'
-            },
-            {
-              text: 'btn2',
-              color: '#33dd44'
-            }
-          ],
-          success: function (data) {
-            if( data.index == 0 )
-            {
-              _this.$app.$def.prompt.showToast({
-                message: '第一个'
-              })
-            }
-            else if( data.index == 1)
-            {
-              _this.$app.$def.prompt.showToast({
-                message: '第二个'
-              })
-            }
-          },
-          cancel: function () {
-            _this.$app.$def.prompt.showToast({
-              message: 'cancel'
-            })
-          },
-          fail: function (data, code) {
-            _this.$app.$def.prompt.showToast({
-              message: 'fail'
-            })
-          }
-        })
-    }
 ```
 
 
@@ -320,8 +251,66 @@ APP中可以同时运行多个页面，但是每次只能显示其中一个页�
 
     - 支付宝支付，微信支付，第三方分享
 
+示例：
+自带弹框组件
+
+<img src="https://note.youdao.com/yws/api/personal/file/996F1E9485B64F2AB511C882EAA58818?method=download&shareKey=50c01dc2b51178ecbf3716de23c17496" width=200  />  
+
+```   
+   const prompt = require('@system.prompt')
+   prompt.showToast(OBJECT)
+   prompt.showDialog(OBJECT)
+   prompt.showContextMenu(OBJECT)
+   //示例
+    checkLogin(){
+      let _this = this;
+      this.$app.$def.prompt.showDialog({
+          title: 'title',
+          message: 'message',
+          buttons: [
+            {
+              text: 'btn',
+              color: '#33dd44'
+            },
+            {
+              text: 'btn1',
+              color: '#33dd44'
+            },
+            {
+              text: 'btn2',
+              color: '#33dd44'
+            }
+          ],
+          success: function (data) {
+            if( data.index == 0 )
+            {
+              _this.$app.$def.prompt.showToast({
+                message: '第一个'
+              })
+            }
+            else if( data.index == 1)
+            {
+              _this.$app.$def.prompt.showToast({
+                message: '第二个'
+              })
+            }
+          },
+          cancel: function () {
+            _this.$app.$def.prompt.showToast({
+              message: 'cancel'
+            })
+          },
+          fail: function (data, code) {
+            _this.$app.$def.prompt.showToast({
+              message: 'fail'
+            })
+          }
+        })
+    }
+```
+
 ## 发布
-目前快应用的发布，需要在快应用平台申请账号，然后绑定需要上家的应用商店的开发者账号，然后上传build出来的rpk 
+目前快应用的发布，需要在快应用平台申请账号，然后绑定需要商家的应用商店的开发者账号，然后上传build出来的rpk 
 
 sign：签名模块，当前仅有debug签名，如果内测上线，请添加release文件夹，增加线上签名  
 
